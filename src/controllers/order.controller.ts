@@ -12,7 +12,7 @@ class OrderController {
       count
     );
 
-    res.status(200).json(createdOrder);
+    res.status(201).json(createdOrder);
   }
 
   async read(req: Request, res: Response) {

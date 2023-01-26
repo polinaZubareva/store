@@ -41,11 +41,3 @@ export const CategoryInstance = (sequelize: Sequelize) => {
 
   Category.sync();
 };
-
-// CREATE TABLE category (
-//     id          serial PRIMARY KEY,
-//     name        varchar(255),
-//     parent_id   integer,
-//     FOREIGN KEY(parent_id) REFERENCES category(id)
-
-// );

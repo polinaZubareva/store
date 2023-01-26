@@ -14,7 +14,9 @@ application.use('/', router);
 
 function startApplication() {
   try {
-    db.authenticate();
+    db.authenticate().then(() => {
+      console.log('Connection enabled');
+    });
     db.sync();
 
     application.listen(PORT, () => {

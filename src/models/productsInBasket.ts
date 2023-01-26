@@ -27,9 +27,6 @@ export const ProductsInBasketInstance = (sequelize: Sequelize) => {
     { sequelize, tableName: 'productsInBasket', timestamps: false }
   );
 
-  //
-  //
-  //
   Basket.hasMany(ProductsInBaskets, {
     foreignKey: {
       name: 'basket_id',
@@ -39,7 +36,6 @@ export const ProductsInBasketInstance = (sequelize: Sequelize) => {
   });
   ProductsInBaskets.belongsTo(Basket);
 
-  //
   Product.hasMany(ProductsInBaskets, {
     foreignKey: {
       name: 'product_id',

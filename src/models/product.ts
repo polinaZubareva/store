@@ -7,7 +7,7 @@ export default class Product extends Model {
   price!: number;
   count!: number;
   description?: string;
-  picture!: string; //????????????
+  picture!: Blob;
   category_id!: number;
 }
 
@@ -38,6 +38,9 @@ export const ProductInstance = (sequelize: Sequelize) => {
       picture: {
         type: DataTypes.BLOB,
       },
+      category_id: {
+        type: DataTypes.INTEGER,
+      },
     },
     {
       sequelize,
@@ -47,20 +50,12 @@ export const ProductInstance = (sequelize: Sequelize) => {
   );
 
   Category.hasMany(Product, {
-    onDelete: 'CASCADE',
+    onDelete: 'RESTRICT',
+    foreignKey: {
+      name: 'category_id',
+    },
   });
   Product.belongsTo(Category);
 
   Product.sync();
 };
-
-// CREATE TABLE product (
-//     id              serial PRIMARY KEY,
-//     name            varchar(255),
-//     price           numeric(2),
-//     count           integer,
-//     description     varchar(255),
-//     picture         bytea,
-//     category_id     integer,
-//     FOREIGN KEY(category_id) REFERENCES category(id)
-// );

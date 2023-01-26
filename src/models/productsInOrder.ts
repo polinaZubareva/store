@@ -26,7 +26,6 @@ export const ProductsInOrderInstance = (sequelize: Sequelize) => {
     { sequelize, tableName: 'productsInOrder', timestamps: false }
   );
 
-  //
   Order.hasMany(ProductsInOrders, {
     foreignKey: {
       name: 'order_id',

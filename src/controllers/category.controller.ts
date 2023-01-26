@@ -10,7 +10,7 @@ class CategoryController {
       parentId
     );
 
-    res.status(200).json(createdCategory);
+    res.status(201).json(createdCategory);
   }
 
   async read(req: Request, res: Response) {

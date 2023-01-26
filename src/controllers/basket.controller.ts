@@ -8,7 +8,7 @@ class BasketController {
 
     const createdBasket = await basketService.createBasket(+userId);
 
-    res.status(200).json(createdBasket);
+    res.status(201).json(createdBasket);
   }
 
   async addProduct(req: Request, res: Response) {
@@ -20,7 +20,7 @@ class BasketController {
       productId,
       count
     );
-    res.status(200).json(createdProduct);
+    res.status(201).json(createdProduct);
   }
 
   async read(req: Request, res: Response) {

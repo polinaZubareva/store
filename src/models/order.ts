@@ -44,12 +44,3 @@ export const OrderInstance = (sequelize: Sequelize) => {
 
   Order.sync();
 };
-
-// CREATE TYPE orderStatus AS ENUM ('assembling', 'delivery', 'on receipt');
-// CREATE TABLE orders (
-//     id          serial PRIMARY KEY,
-//     user_id     integer,
-//     order_status orderStatus,
-//     FOREIGN KEY(user_id) REFERENCES client(id)
-
-// );
