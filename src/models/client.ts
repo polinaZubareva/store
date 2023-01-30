@@ -1,11 +1,11 @@
 import { DataTypes, Model, Sequelize } from '../db';
 
 export default class Client extends Model {
-  public id!: number;
-  public name?: string;
-  public birthdate?: Date;
-  public login!: string;
-  public password!: string;
+  id!: number;
+  name?: string;
+  birthdate?: Date;
+  login!: string;
+  password!: string;
 }
 
 export const ClientInstance = (sequelize: Sequelize) => {

@@ -12,10 +12,10 @@ type TDeletedCategory = {
   value: number | null;
 };
 
-type TUpdatedCategory = {
+type TCategories = {
   ok: boolean;
   error?: Error;
   value: Category[] | null;
 };
 
-export { type TCategory, type TDeletedCategory, type TUpdatedCategory };
+export { type TCategory, type TDeletedCategory, type TCategories };

@@ -1,6 +1,6 @@
 import { db } from '../db';
 import { Category, CategoryInstance } from '../models';
-import { TCategory, TDeletedCategory, TUpdatedCategory } from './category.type';
+import { TCategory, TDeletedCategory, TCategories } from './category.type';
 
 class CategoryService {
   async getCategory(categoryId: number) {
@@ -18,6 +18,25 @@ class CategoryService {
 
         result.error = reason;
       });
+
+    return result;
+  }
+
+  async getCategories() {
+    CategoryInstance(db);
+
+    const result: TCategories = { ok: false, value: null };
+
+    await Category.findAll()
+      .then((value) => {
+        result.value = value;
+        result.ok = true;
+      })
+      .catch((reason) => {
+        console.log(reason);
+
+        result.error = reason;
+      });
     return result;
   }
 
@@ -26,7 +45,7 @@ class CategoryService {
 
     const result: TCategory = { ok: false, value: null };
 
-    await Category.create({ name: name, category_id: parentId })
+    await Category.create({ name: name, parent_id: parentId })
       .then((value) => {
         result.value = value;
         result.ok = true;
@@ -60,7 +79,7 @@ class CategoryService {
   async updateCategory(id: number, name: string, parentId: number) {
     CategoryInstance(db);
 
-    const result: TUpdatedCategory = { ok: false, value: null };
+    const result: TCategories = { ok: false, value: null };
 
     await Category.update(
       { name: name, parent_id: parentId },
