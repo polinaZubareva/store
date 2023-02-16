@@ -4,39 +4,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductInstance = void 0;
-const db_1 = require("../db");
+const sequelize_1 = require("sequelize");
 const category_1 = __importDefault(require("./category"));
-class Product extends db_1.Model {
+class Product extends sequelize_1.Model {
 }
 exports.default = Product;
 const ProductInstance = (sequelize) => {
     Product.init({
         id: {
-            type: db_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false,
         },
         name: {
-            type: db_1.DataTypes.STRING,
+            type: sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
         price: {
-            type: db_1.DataTypes.DECIMAL(2),
+            type: sequelize_1.DataTypes.DOUBLE,
             allowNull: false,
         },
         count: {
-            type: db_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
         description: {
-            type: db_1.DataTypes.STRING,
+            type: sequelize_1.DataTypes.STRING,
         },
         picture: {
-            type: db_1.DataTypes.BLOB,
+            type: sequelize_1.DataTypes.BLOB,
         },
         category_id: {
-            type: db_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.INTEGER,
         },
     }, {
         sequelize,
@@ -44,12 +44,12 @@ const ProductInstance = (sequelize) => {
         timestamps: false,
     });
     category_1.default.hasMany(Product, {
+        foreignKey: 'category_id',
         onDelete: 'RESTRICT',
-        foreignKey: {
-            name: 'category_id',
-        },
     });
-    Product.belongsTo(category_1.default);
+    Product.belongsTo(category_1.default, {
+        foreignKey: 'category_id',
+    });
     Product.sync();
 };
 exports.ProductInstance = ProductInstance;

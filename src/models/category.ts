@@ -1,9 +1,9 @@
-import { Model, DataTypes, Sequelize } from '../db';
+import { Model, Sequelize, DataTypes } from 'sequelize';
 
 export default class Category extends Model {
   id!: number;
   name!: string;
-  parent_id?: number | null;
+  parent_id?: number;
 }
 
 export const CategoryInstance = (sequelize: Sequelize) => {
@@ -31,13 +31,17 @@ export const CategoryInstance = (sequelize: Sequelize) => {
   );
 
   Category.hasOne(Category, {
+    foreignKey: {
+      name: 'parent_id',
+    },
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
+  });
+  Category.belongsTo(Category, {
     foreignKey: {
       name: 'parent_id',
     },
   });
-  Category.belongsTo(Category);
 
   Category.sync();
 };

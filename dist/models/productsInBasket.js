@@ -4,24 +4,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsInBasketInstance = void 0;
-const db_1 = require("../db");
+const sequelize_1 = require("sequelize");
 const basket_1 = __importDefault(require("./basket"));
 const product_1 = __importDefault(require("./product"));
-class ProductsInBaskets extends db_1.Model {
+class ProductsInBaskets extends sequelize_1.Model {
 }
 exports.default = ProductsInBaskets;
 const ProductsInBasketInstance = (sequelize) => {
     ProductsInBaskets.init({
         basket_id: {
-            type: db_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
         product_id: {
-            type: db_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
         product_count: {
-            type: db_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
     }, { sequelize, tableName: 'productsInBasket', timestamps: false });

@@ -36,9 +36,9 @@ class ProductController {
   }
 
   async readSeveral(req: Request, res: Response) {
-    const categoryId: number = +req.body.categoryId;
+    const { field, value } = req.body;
 
-    const read = await productService.getProduct(categoryId);
+    const read = await productService.getProducts(+value, field);
 
     res.status(200).json(read);
   }

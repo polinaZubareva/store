@@ -1,5 +1,6 @@
-import { DataTypes, Model, Sequelize } from '../db';
-import Order from './order';
+import { Model, Sequelize, DataTypes } from 'sequelize';
+import Order, { OrderInstance } from './order';
+import { db } from '../db';
 
 export default class ProductsInOrders extends Model {
   order_id!: number;
@@ -8,6 +9,8 @@ export default class ProductsInOrders extends Model {
 }
 
 export const ProductsInOrderInstance = (sequelize: Sequelize) => {
+  OrderInstance(db);
+
   ProductsInOrders.init(
     {
       order_id: {

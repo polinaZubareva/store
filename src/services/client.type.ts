@@ -1,6 +1,6 @@
-//import { Client } from '../models';
+import { Client } from '../models';
 
-type TClient = {
+type TClientReqBody = {
   id: number;
   name?: string;
   birthdate?: Date;
@@ -8,4 +8,27 @@ type TClient = {
   password: string;
 };
 
-export { type TClient };
+type TClient = {
+  ok: boolean;
+  value: Client | null;
+  error?: Error;
+};
+
+type TDeletedClient = {
+  ok: boolean;
+  value: number;
+  error?: Error;
+};
+
+type TUpdateClient = {
+  ok: boolean;
+  value: Client | null;
+  error?: Error;
+};
+
+export {
+  type TClient,
+  type TClientReqBody,
+  type TDeletedClient,
+  type TUpdateClient,
+};

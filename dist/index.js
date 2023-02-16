@@ -13,9 +13,9 @@ application.use((0, cors_1.default)());
 application.use(express_1.default.json());
 application.use(express_1.default.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 application.use('/', routes_1.default);
-function startApplication() {
+async function startApplication() {
     try {
-        db_1.db.authenticate().then(() => {
+        await db_1.db.authenticate().then(() => {
             console.log('Connection enabled');
         });
         db_1.db.sync();

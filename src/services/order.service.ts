@@ -4,14 +4,7 @@ import { Order, OrderInstance } from '../models';
 import ProductsInOrders, {
   ProductsInOrderInstance,
 } from '../models/productsInOrder';
-
-type TOrder = {
-  ok: boolean;
-  errorOrder?: Error;
-  errorProducts?: Error;
-  order: Order | null;
-  details: ProductsInOrders | null;
-};
+import { TOrder, TOrders } from './order.type';
 
 class OrderService {
   async createOrder(
@@ -73,8 +66,37 @@ class OrderService {
         result.errorOrder = reason;
       });
 
-    if (result.order !== null) {
+    if (result.order !== undefined) {
       await ProductsInOrders.findOne({ where: { order_id: orderId } })
+        .then((value) => {
+          result.details = value;
+        })
+        .catch((reason) => {
+          result.errorProducts = reason;
+        });
+    } else result.ok = false;
+
+    return result;
+  }
+
+  async getOrders(userId: number) {
+    OrderInstance(db);
+    ProductsInOrderInstance(db);
+
+    const result: TOrders = {
+      ok: false,
+      order: null,
+      details: null,
+    };
+
+    const orders = await Order.findAll({ where: { user_id: userId } });
+    const ordersIds = orders.map((value) => value.id);
+
+    if (result.order !== undefined) {
+      result.order = orders;
+      result.ok = true;
+
+      await ProductsInOrders.findAll({ where: { order_id: ordersIds } })
         .then((value) => {
           result.details = value;
         })

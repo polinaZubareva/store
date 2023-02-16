@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const services_1 = require("../services");
 class OrderController {
     async create(req, res) {
-        const { userId, orderStatus, products, count } = req.body;
+        const { iser_id: userId, orderStatus, products, count } = req.body;
         const createdOrder = await services_1.orderService.createOrder(userId, orderStatus, products, count);
         res.status(201).json(createdOrder);
     }

@@ -17,10 +17,24 @@ class CategoryService {
         });
         return result;
     }
+    async getCategories() {
+        (0, models_1.CategoryInstance)(db_1.db);
+        const result = { ok: false, value: null };
+        await models_1.Category.findAll()
+            .then((value) => {
+            result.value = value;
+            result.ok = true;
+        })
+            .catch((reason) => {
+            console.log(reason);
+            result.error = reason;
+        });
+        return result;
+    }
     async createCategory(name, parentId) {
         (0, models_1.CategoryInstance)(db_1.db);
         const result = { ok: false, value: null };
-        await models_1.Category.create({ name: name, category_id: parentId })
+        await models_1.Category.create({ name: name, parent_id: parentId })
             .then((value) => {
             result.value = value;
             result.ok = true;

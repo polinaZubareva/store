@@ -11,29 +11,19 @@ class ProductService {
   async createProduct(body: TProductReqBody) {
     ProductInstance(db);
 
-    const {
-      id,
-      name = '',
-      price = 0,
-      count = 0,
-      description,
-      picture = '',
-      category_id,
-    } = body;
-
     const result: TProduct = {
       ok: false,
       value: null,
     };
 
     await Product.create({
-      id: id,
-      name: name,
-      price: price,
-      count: count,
-      description: description,
-      picture: picture,
-      category_id: category_id,
+      id: body.id,
+      name: body.name,
+      price: body.price,
+      count: body.count,
+      description: body.description,
+      picture: body.picture,
+      category_id: body.category_id,
     })
       .then((value) => {
         result.value = value;

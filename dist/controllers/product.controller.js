@@ -23,8 +23,8 @@ class ProductController {
         res.status(200).json(readOne);
     }
     async readSeveral(req, res) {
-        const categoryId = +req.body.categoryId;
-        const read = await services_1.productService.getProduct(categoryId);
+        const { field, value } = req.body;
+        const read = await services_1.productService.getProducts(+value, field);
         res.status(200).json(read);
     }
 }

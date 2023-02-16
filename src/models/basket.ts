@@ -1,5 +1,6 @@
-import { DataTypes, Model, Sequelize } from '../db';
-import Client from './client';
+import { db } from '../db';
+import Client, { ClientInstance } from './client';
+import { DataTypes, Sequelize, Model } from 'sequelize';
 
 export default class Basket extends Model {
   id!: number;
@@ -7,6 +8,7 @@ export default class Basket extends Model {
 }
 
 export const BasketInstance = (sequelize: Sequelize) => {
+  ClientInstance(db);
   Basket.init(
     {
       id: {

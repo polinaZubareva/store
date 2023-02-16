@@ -1,5 +1,6 @@
-import { DataTypes, Model, Sequelize } from '../db';
-import Category from './category';
+import { Model, DataTypes, Sequelize } from 'sequelize';
+import Category, { CategoryInstance } from './category';
+import { db } from '../db';
 
 export default class Product extends Model {
   id!: number;
@@ -12,6 +13,8 @@ export default class Product extends Model {
 }
 
 export const ProductInstance = (sequelize: Sequelize) => {
+  CategoryInstance(db);
+
   Product.init(
     {
       id: {
@@ -25,7 +28,7 @@ export const ProductInstance = (sequelize: Sequelize) => {
         allowNull: false,
       },
       price: {
-        type: DataTypes.DECIMAL(2),
+        type: DataTypes.DOUBLE,
         allowNull: false,
       },
       count: {
@@ -50,12 +53,12 @@ export const ProductInstance = (sequelize: Sequelize) => {
   );
 
   Category.hasMany(Product, {
+    foreignKey: 'category_id',
     onDelete: 'RESTRICT',
-    foreignKey: {
-      name: 'category_id',
-    },
   });
-  Product.belongsTo(Category);
+  Product.belongsTo(Category, {
+    foreignKey: 'category_id',
+  });
 
   Product.sync();
 };

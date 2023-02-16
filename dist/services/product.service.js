@@ -5,19 +5,27 @@ const db_1 = require("../db");
 class ProductService {
     async createProduct(body) {
         (0, models_1.ProductInstance)(db_1.db);
-        const { id, name = '', price = 0, count = 0, description, picture = '', category_id, } = body;
+        // const {
+        //   id,
+        //   name = '',
+        //   price = 0,
+        //   count = 0,
+        //   description,
+        //   picture = '',
+        //   category_id,
+        // } = body;
         const result = {
             ok: false,
             value: null,
         };
         await models_1.Product.create({
-            id: id,
-            name: name,
-            price: price,
-            count: count,
-            description: description,
-            picture: picture,
-            category_id: category_id,
+            id: body.id,
+            name: body.name,
+            price: body.price,
+            count: body.count,
+            description: body.description,
+            picture: body.picture,
+            category_id: body.category_id,
         })
             .then((value) => {
             result.value = value;

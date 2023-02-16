@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize } from '../db';
+import { Model, Sequelize, DataTypes } from 'sequelize';
 
 export default class Client extends Model {
   id!: number;
@@ -29,6 +29,7 @@ export const ClientInstance = (sequelize: Sequelize) => {
       login: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
 
       password: {
@@ -42,5 +43,6 @@ export const ClientInstance = (sequelize: Sequelize) => {
       timestamps: false,
     }
   );
+
   Client.sync();
 };

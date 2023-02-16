@@ -1,6 +1,6 @@
 "use strict";
-// import { db } from '../db';
-// class ClientService {
-//   async createClient(body:) {}
-// }
-// export default new ClientService();
+Object.defineProperty(exports, "__esModule", { value: true });
+class ClientService {
+    async createClient(body) { }
+}
+exports.default = new ClientService();

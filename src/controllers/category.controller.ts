@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 class CategoryController {
   async create(req: Request, res: Response) {
-    const { name, parentId = null } = req.body;
+    const { name, parent_id: parentId } = req.body;
 
     const createdCategory = await categoryService.createCategory(
       name,
@@ -28,7 +28,7 @@ class CategoryController {
   }
 
   async update(req: Request, res: Response) {
-    const { id, name, parentId = null } = req.body;
+    const { id, name, parent_id: parentId = null } = req.body;
 
     const updatedCategory = await categoryService.updateCategory(
       id,

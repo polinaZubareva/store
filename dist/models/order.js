@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderInstance = exports.orderStatus = void 0;
-const db_1 = require("../db");
+const sequelize_1 = require("sequelize");
 const client_1 = __importDefault(require("./client"));
 var orderStatus;
 (function (orderStatus) {
@@ -12,23 +12,23 @@ var orderStatus;
     orderStatus[orderStatus["delivery"] = 1] = "delivery";
     orderStatus[orderStatus["on receipt"] = 2] = "on receipt";
 })(orderStatus = exports.orderStatus || (exports.orderStatus = {}));
-class Order extends db_1.Model {
+class Order extends sequelize_1.Model {
 }
 exports.default = Order;
 const OrderInstance = (sequelize) => {
     Order.init({
         id: {
-            type: db_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
             autoIncrement: true,
         },
         user_id: {
-            type: db_1.DataTypes.INTEGER,
+            type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
         order_status: {
-            type: db_1.DataTypes.ENUM('assembling', 'delivery', 'on receipt'),
+            type: sequelize_1.DataTypes.ENUM('assembling', 'delivery', 'on receipt'),
             allowNull: false,
         },
     }, { sequelize, tableName: 'orders', timestamps: false });

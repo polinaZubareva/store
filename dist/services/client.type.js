@@ -1,9 +1,3 @@
 "use strict";
-// import { Client } from '../models';
-// type TClient = {
-//   id: number;
-//   name?: string;
-//   birthdate?: Date;
-//   login: string;
-//   password: string;
-// };
+//import { Client } from '../models';
+Object.defineProperty(exports, "__esModule", { value: true });

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 class OrderController {
   async create(req: Request, res: Response) {
-    const { userId, orderStatus, products, count } = req.body;
+    const { iser_id: userId, orderStatus, products, count } = req.body;
 
     const createdOrder = await orderService.createOrder(
       userId,
@@ -21,6 +21,14 @@ class OrderController {
     const readOrder = await orderService.getOrder(orderId);
 
     res.status(200).json(readOrder);
+  }
+
+  async readSeveral(req: Request, res: Response) {
+    const userId: number = req.body;
+
+    const readOrders = await orderService.getOrders(userId);
+
+    res.status(200).json(readOrders);
   }
 
   async delete(req: Request, res: Response) {

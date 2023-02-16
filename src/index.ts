@@ -12,9 +12,9 @@ application.use(express.json());
 application.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 application.use('/', router);
 
-function startApplication() {
+async function startApplication() {
   try {
-    db.authenticate().then(() => {
+    await db.authenticate().then(() => {
       console.log('Connection enabled');
     });
     db.sync();

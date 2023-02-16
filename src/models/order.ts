@@ -1,5 +1,6 @@
-import { DataTypes, Model, Sequelize } from '../db';
-import Client from './client';
+import { Model, Sequelize, DataTypes } from 'sequelize';
+import Client, { ClientInstance } from './client';
+import { db } from '../db';
 
 export enum orderStatus {
   'assembling',
@@ -14,6 +15,8 @@ export default class Order extends Model {
 }
 
 export const OrderInstance = (sequelize: Sequelize) => {
+  ClientInstance(db);
+
   Order.init(
     {
       id: {

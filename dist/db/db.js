@@ -1,10 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Sequelize = exports.Model = exports.DataTypes = exports.db = void 0;
+exports.db = void 0;
 const sequelize_1 = require("sequelize");
-Object.defineProperty(exports, "Sequelize", { enumerable: true, get: function () { return sequelize_1.Sequelize; } });
-Object.defineProperty(exports, "DataTypes", { enumerable: true, get: function () { return sequelize_1.DataTypes; } });
-Object.defineProperty(exports, "Model", { enumerable: true, get: function () { return sequelize_1.Model; } });
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 const dbName = process.env.DB_NAME;
