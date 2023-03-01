@@ -4,7 +4,7 @@ import { TDeletedCount } from '../services/basket.type';
 
 class BasketController {
   async createBasket(req: Request, res: Response) {
-    const { user_id: userId } = req.body;
+    const { client_id: userId } = req.body;
 
     const createdBasket = await basketService.createBasket(+userId);
 
@@ -12,7 +12,7 @@ class BasketController {
   }
 
   async addProduct(req: Request, res: Response) {
-    const { product_id: productId = undefined, count = 0 } = req.body;
+    const { product_id: productId, product_count: count = 0 } = req.body;
     const basketId = +req.params.basketId;
 
     const createdProduct = await basketService.addProductToBasket(
@@ -34,11 +34,10 @@ class BasketController {
     const basketId: number = +req.params.basketId;
     let deletedCount: TDeletedCount;
 
-    const { productsId = undefined } = req.body;
+    const { products_id: productsId = undefined } = req.body;
     if (!!productsId.length) {
       deletedCount = await basketService.deleteProductsFromBasket(
         basketId,
-        // Array.from(productsId)
         productsId
       );
     } else {
@@ -48,7 +47,11 @@ class BasketController {
   }
 
   async update(req: Request, res: Response) {
-    const { basket_id: basketId, productId, count } = req.body;
+    const {
+      basket_id: basketId,
+      product_id: productId,
+      product_count: count,
+    } = req.body;
     const updatedProductCount = basketService.updateProductInBasket(
       +basketId,
       +productId,

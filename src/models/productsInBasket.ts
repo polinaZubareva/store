@@ -15,39 +15,39 @@ export const ProductsInBasketInstance = (sequelize: Sequelize) => {
 
   ProductsInBaskets.init(
     {
-      basket_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      product_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      // basket_id: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
+      // product_id: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
       product_count: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
-    { sequelize, tableName: 'productsInBasket', timestamps: false }
+    { sequelize, tableName: 'basket_products', timestamps: false }
   );
 
-  Basket.hasMany(ProductsInBaskets, {
-    foreignKey: {
-      name: 'basket_id',
-    },
-    onDelete: 'RESTRICT',
-    onUpdate: 'CASCADE',
-  });
-  ProductsInBaskets.belongsTo(Basket);
+  Basket.hasMany(ProductsInBaskets);
+  ProductsInBaskets.belongsTo(Basket, {
+    foreignKey: 'basket_id',
 
-  Product.hasMany(ProductsInBaskets, {
-    foreignKey: {
-      name: 'product_id',
-    },
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
   });
-  ProductsInBaskets.belongsTo(Product);
+
+  Product.hasMany(ProductsInBaskets);
+  ProductsInBaskets.belongsTo(Product, {
+    foreignKey: 'product_id',
+
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+  });
 
   ProductsInBaskets.sync();
+  // Product.sync();
+  // Basket.sync();
 };

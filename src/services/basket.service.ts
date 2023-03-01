@@ -5,12 +5,7 @@ import {
   ProductsInBasketInstance,
   ProductsInBaskets,
 } from '../models';
-import {
-  TCreateBasket,
-  TDeletedCount,
-  TProductsInBaskets,
-  TProductInBasket,
-} from './basket.type';
+import { TCreateBasket, TDeletedCount, TProductsInBasket } from './basket.type';
 
 class BasketService {
   async createBasket(userId: number): Promise<object> {
@@ -22,18 +17,20 @@ class BasketService {
       error: undefined,
     };
 
-    await Basket.create({
-      user_id: userId,
-    })
-      .then((value: Basket) => {
-        result.value = value;
-        result.ok = true;
+    const idList = await Basket.findOne({ where: { client_id: userId } });
+    if (!idList)
+      await Basket.create({
+        client_id: userId,
       })
-      .catch((reason: Error) => {
-        console.log(reason);
+        .then((value: Basket) => {
+          result.value = value;
+          result.ok = true;
+        })
+        .catch((reason: Error) => {
+          console.log(reason);
 
-        result.error = reason;
-      });
+          result.error = reason;
+        });
 
     return result;
   }
@@ -98,7 +95,7 @@ class BasketService {
   ) {
     ProductsInBasketInstance(db);
 
-    const result: TProductsInBaskets = {
+    const result: TProductsInBasket = {
       ok: false,
       value: null,
       error: undefined,
@@ -124,7 +121,7 @@ class BasketService {
   async getProductsInBasket(basketId: number) {
     ProductsInBasketInstance(db);
 
-    const result: TProductsInBaskets = {
+    const result: TProductsInBasket = {
       ok: false,
       value: null,
       error: undefined,
@@ -146,25 +143,41 @@ class BasketService {
   async addProductToBasket(basketId: number, productId: number, count: number) {
     ProductsInBasketInstance(db);
 
-    const result: TProductInBasket = {
+    const result: TProductsInBasket = {
       ok: false,
       value: null,
     };
 
-    await ProductsInBaskets.create({
-      basket_id: basketId,
-      product_id: productId,
-      product_count: count,
-    })
-      .then((value) => {
-        result.value = value;
-        result.ok = true;
-      })
-      .catch((reason) => {
-        console.log(reason);
+    const ifExistInBasket = await ProductsInBaskets.findOne({
+      where: { basket_id: basketId, product_id: productId },
+    });
+    console.log(ifExistInBasket);
 
-        result.error = reason;
-      });
+    if (!ifExistInBasket)
+      await ProductsInBaskets.create({
+        basket_id: basketId,
+        product_id: productId,
+        product_count: count,
+      })
+        .then((value) => {
+          result.value = value;
+          result.ok = true;
+        })
+        .catch((reason) => {
+          console.log(reason);
+
+          result.error = reason;
+        });
+    else {
+      const addOne = await this.updateProductInBasket(
+        basketId,
+        productId,
+        ifExistInBasket.product_count + 1
+      );
+      result.value = addOne.value;
+      result.ok = addOne.ok;
+      result.error = addOne.error;
+    }
 
     return result;
   }

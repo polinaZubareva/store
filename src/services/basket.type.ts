@@ -1,14 +1,8 @@
 import { Basket, ProductsInBaskets } from '../models';
 
-type TProductsInBaskets = {
+type TProductsInBasket = {
   ok: boolean;
-  value: ProductsInBaskets[] | null;
-  error?: Error;
-};
-
-type TProductInBasket = {
-  ok: boolean;
-  value: ProductsInBaskets | null;
+  value: ProductsInBaskets | ProductsInBaskets[] | null;
   error?: Error;
 };
 
@@ -31,9 +25,8 @@ type TDeletedCount = {
 };
 
 export {
-  type TProductsInBaskets,
+  type TProductsInBasket,
   type TBaskets,
   type TDeletedCount,
   type TCreateBasket,
-  type TProductInBasket,
 };

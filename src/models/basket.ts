@@ -4,7 +4,7 @@ import { DataTypes, Sequelize, Model } from 'sequelize';
 
 export default class Basket extends Model {
   id!: number;
-  user_id!: number;
+  client_id!: number;
 }
 
 export const BasketInstance = (sequelize: Sequelize) => {
@@ -17,22 +17,22 @@ export const BasketInstance = (sequelize: Sequelize) => {
         autoIncrement: true,
         allowNull: false,
       },
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      // client_id: {
+      //   type: DataTypes.INTEGER,
+      //   //references: { model: 'clients', key: 'id' },
+      //   allowNull: false,
+      // },
     },
     { sequelize, tableName: 'baskets', timestamps: false }
   );
 
-  Client.hasOne(Basket, {
-    foreignKey: {
-      name: 'user_id',
-    },
+  Client.hasOne(Basket);
+  Basket.belongsTo(Client, {
+    foreignKey: 'client_id',
+
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });
-  Basket.belongsTo(Client);
 
   Basket.sync();
 };
