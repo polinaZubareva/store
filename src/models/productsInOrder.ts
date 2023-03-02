@@ -13,10 +13,10 @@ export const ProductsInOrderInstance = (sequelize: Sequelize) => {
 
   ProductsInOrders.init(
     {
-      order_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      // order_id: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
       products_id: {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: false,
@@ -26,17 +26,17 @@ export const ProductsInOrderInstance = (sequelize: Sequelize) => {
         allowNull: false,
       },
     },
-    { sequelize, tableName: 'productsInOrder', timestamps: false }
+    { sequelize, tableName: 'order_products', timestamps: false }
   );
 
-  Order.hasMany(ProductsInOrders, {
+  Order.hasMany(ProductsInOrders);
+  ProductsInOrders.belongsTo(Order, {
     foreignKey: {
       name: 'order_id',
     },
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
   });
-  ProductsInOrders.belongsTo(Order);
 
   ProductsInOrders.sync();
 };

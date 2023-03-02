@@ -6,11 +6,12 @@ export enum orderStatus {
   'assembling',
   'delivery',
   'on receipt',
+  'canceled',
 }
 
 export default class Order extends Model {
   id!: number;
-  user_id!: number;
+  client_id!: number;
   order_status!: orderStatus;
 }
 
@@ -25,25 +26,28 @@ export const OrderInstance = (sequelize: Sequelize) => {
         allowNull: false,
         autoIncrement: true,
       },
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      // client_id: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
       order_status: {
-        type: DataTypes.ENUM('assembling', 'delivery', 'on receipt'),
+        type: DataTypes.ENUM(
+          'assembling',
+          'delivery',
+          'on receipt',
+          'canceled'
+        ),
         allowNull: false,
       },
     },
     { sequelize, tableName: 'orders', timestamps: false }
   );
 
-  Client.hasMany(Order, {
+  Client.hasMany(Order);
+  Order.belongsTo(Client, {
     onDelete: 'CASCADE',
-    foreignKey: {
-      name: 'user_id',
-    },
+    foreignKey: 'client_id',
   });
-  Order.belongsTo(Client);
 
   Order.sync();
 };

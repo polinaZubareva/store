@@ -48,6 +48,4 @@ export const ProductsInBasketInstance = (sequelize: Sequelize) => {
   });
 
   ProductsInBaskets.sync();
-  // Product.sync();
-  // Basket.sync();
 };

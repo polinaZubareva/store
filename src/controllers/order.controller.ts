@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 class OrderController {
   async create(req: Request, res: Response) {
-    const { iser_id: userId, orderStatus, products, count } = req.body;
+    const { userId, orderStatus, products, count } = req.body;
 
     const createdOrder = await orderService.createOrder(
       userId,
@@ -15,6 +15,14 @@ class OrderController {
     res.status(201).json(createdOrder);
   }
 
+  async update(req: Request, res: Response) {
+    const { orderId, orderStatus } = req.body;
+
+    const updatedOrder = await orderService.updateStatus(orderId, orderStatus);
+
+    res.status(200).json(updatedOrder);
+  }
+
   async read(req: Request, res: Response) {
     const orderId: number = +req.params.id;
 
@@ -24,7 +32,7 @@ class OrderController {
   }
 
   async readSeveral(req: Request, res: Response) {
-    const userId: number = req.body;
+    const { userId } = req.body;
 
     const readOrders = await orderService.getOrders(userId);
 

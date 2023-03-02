@@ -22,7 +22,7 @@ class OrderService {
       details: null,
     };
 
-    await Order.create({ user_id: userId, order_status: status })
+    await Order.create({ client_id: userId, order_status: status })
       .then((value) => {
         result.ok = true;
         result.order = value;
@@ -45,6 +45,17 @@ class OrderService {
         });
     } else result.ok = false;
     return result;
+  }
+
+  async updateStatus(orderId: number, status: orderStatus) {
+    OrderInstance(db);
+
+    const updatedOrder = await Order.update(
+      { order_status: status },
+      { where: { id: orderId }, returning: true }
+    );
+
+    return updatedOrder[1];
   }
 
   async getOrder(orderId: number) {
@@ -89,7 +100,7 @@ class OrderService {
       details: null,
     };
 
-    const orders = await Order.findAll({ where: { user_id: userId } });
+    const orders = await Order.findAll({ where: { client_id: userId } });
     const ordersIds = orders.map((value) => value.id);
 
     if (result.order !== undefined) {
