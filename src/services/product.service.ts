@@ -1,3 +1,4 @@
+import { getPagination } from './../utils/pagination';
 import { ProductInstance, Product } from '../models';
 import { db } from '../db';
 import {
@@ -5,7 +6,9 @@ import {
   TProduct,
   TProducts,
   TProductReqBody,
+  TProductsAndCount,
 } from './product.type';
+import { Op } from 'sequelize';
 
 class ProductService {
   async createProduct(body: TProductReqBody) {
@@ -55,31 +58,88 @@ class ProductService {
     return result;
   }
 
-  async getProducts(valueOfField: number, field: string) {
+  async getProducts(valueOfField: object, field: string, paginate: object) {
     ProductInstance(db);
 
-    const result: TProducts = { value: null, ok: false };
+    const result: TProductsAndCount = { value: null, ok: false, rowsCount: 0 };
 
-    if (field == 'categoryId')
+    let products!: Promise<{
+      rows: Product[];
+      count: number;
+    }>;
+
+    let sort: string | undefined;
+
+    const moreThen = Number(valueOfField['moreThen' as keyof Object])
+      ? Number(valueOfField['moreThen' as keyof Object])
+      : undefined;
+    const lessThen = Number(valueOfField['lessThen' as keyof Object])
+      ? Number(valueOfField['lessThen' as keyof Object])
+      : undefined;
+    const equal = Number(valueOfField['equal' as keyof Object])
+      ? Number(valueOfField['equal' as keyof Object])
+      : undefined;
+
+    sort = String(valueOfField['sort' as keyof Object]);
+
+    let { limit, offset } = getPagination(
+      Number(paginate['page' as keyof Object]),
+      Number(paginate['limit' as keyof Object])
+    );
+
+    if (field == 'categoryId') {
       // await Product.findAll({ where: { [field]: valueOfField } })
-      await Product.findAll({ where: { category_id: valueOfField } })
-        .then((value) => {
-          result.value = value;
-          result.ok = true;
-        })
-        .catch((reason) => {
-          result.error = reason;
-        });
+      products = Product.findAndCountAll({
+        where: { category_id: Number(valueOfField) },
+        limit: limit,
+        offset: offset,
+      });
+    }
 
-    if (field == 'id')
-      await Product.findAll({ where: { id: valueOfField } })
-        .then((value) => {
-          result.value = value;
-          result.ok = true;
-        })
-        .catch((reason) => {
-          result.error = reason;
-        });
+    if (field == 'id') {
+      products = Product.findAndCountAll({
+        where: { id: Number(valueOfField) },
+        limit: limit,
+        offset: offset,
+      });
+    }
+
+    if (field == 'name') {
+      products = Product.findAndCountAll({
+        where: { name: valueOfField },
+        limit: limit,
+        offset: offset,
+      });
+    }
+
+    if (field == 'price') {
+      products = Product.findAndCountAll({
+        where: {
+          price: {
+            [Op.or]: {
+              [Op.eq]: equal,
+              [Op.gt]: moreThen,
+              [Op.lt]: lessThen,
+            },
+          },
+        },
+        limit: limit,
+        offset: offset,
+      });
+    }
+
+    await products
+      .then((value) => {
+        if (sort === '+') value.rows.sort((a, b) => a.price - b.price);
+        else if (sort === '-') value.rows.sort((a, b) => b.price - a.price);
+
+        result.value = value.rows;
+        result.rowsCount = value.count;
+        result.ok = true;
+      })
+      .catch((reason) => {
+        result.error = reason;
+      });
 
     return result;
   }

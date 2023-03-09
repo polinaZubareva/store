@@ -22,6 +22,13 @@ type TProducts = {
   value: Product[] | null;
 };
 
+type TProductsAndCount = {
+  ok: boolean;
+  error?: Error;
+  value: Product[] | null;
+  rowsCount: number;
+};
+
 type TDeletedProduct = {
   ok: boolean;
   error?: Error;
@@ -33,4 +40,5 @@ export {
   type TProducts,
   type TDeletedProduct,
   type TProductReqBody,
+  type TProductsAndCount,
 };
