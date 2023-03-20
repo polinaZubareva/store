@@ -2,7 +2,8 @@ import express from 'express';
 import { db } from './db';
 import cors from 'cors';
 import router from './routes';
-
+import { config } from 'dotenv';
+config();
 const PORT = process.env.PORT || 5000;
 
 const application = express();
@@ -19,7 +20,7 @@ async function startApplication() {
     });
     db.sync();
 
-    application.listen(PORT, () => {
+    application.listen(+PORT, '0.0.0.0', () => {
       console.log(`Application started on PORT ${PORT}`);
     });
   } catch (error) {

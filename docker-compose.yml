@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  server:
+    build:
+      network: host
+      context: .
+    ports: [8080:8000]
+    network_mode: bridge
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15.2-alpine
+    ports: [5432:2345]
+    network_mode: bridge
+    environment:
+      - POSTGRES_PASSWORD=26080302
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=store
