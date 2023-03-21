@@ -14,11 +14,23 @@ application.use(express.urlencoded({ extended: true })); // for parsing applicat
 application.use('/', router);
 
 async function startApplication() {
+  let retries = 5;
   try {
-    await db.authenticate().then(() => {
-      console.log('Connection enabled');
-    });
-    db.sync();
+    while (retries) {
+      try {
+        await db.authenticate().then(() => {
+          console.log('Connection enabled');
+        });
+        db.sync();
+        break;
+      } catch (error) {
+        console.log(error);
+        retries -= 1;
+        await new Promise((res) => {
+          setTimeout(res, 3000);
+        });
+      }
+    }
 
     application.listen(+PORT, '0.0.0.0', () => {
       console.log(`Application started on PORT ${PORT}`);
